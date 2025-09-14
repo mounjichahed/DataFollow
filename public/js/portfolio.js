@@ -220,7 +220,33 @@ saveBtn.addEventListener('click', savePortfolio);
   loadCoinList().then(() => {
     const saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
     if (saved.length) {
-      saved.forEach(item => addRow(item));
+      const grouped = {};
+      saved.forEach(item => {
+        const key = `${item.id}|${item.currency || 'eur'}`;
+        const amt = parseFloat(item.amount) || 0;
+        const price = parseFloat(item.price) || 0;
+        if (!grouped[key]) {
+          grouped[key] = {
+            id: item.id,
+            date: item.date,
+            amount: amt,
+            price,
+            currency: item.currency || 'eur'
+          };
+        } else {
+          const g = grouped[key];
+          const totalAmount = g.amount + amt;
+          const totalCost = g.amount * g.price + amt * price;
+          g.amount = totalAmount;
+          g.price = totalCost / totalAmount;
+          g.date = item.date;
+        }
+      });
+      Object.values(grouped).forEach(g => {
+        g.amount = g.amount.toString();
+        g.price = g.price.toString();
+        addRow(g);
+      });
     } else {
       addRow();
     }

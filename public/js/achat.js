@@ -97,7 +97,20 @@ form.addEventListener('submit', e => {
   addRow({ crypto: symbol, quantity, price, total });
   save();
   const portfolio = JSON.parse(localStorage.getItem('portfolio') || '[]');
-  portfolio.push({ id: crypto, date: new Date().toISOString().slice(0,10), amount: quantity, price, currency: 'eur' });
+  const existing = portfolio.find(
+    item => item.id === crypto && (item.currency || 'eur') === 'eur'
+  );
+  if (existing) {
+    const oldAmount = parseFloat(existing.amount) || 0;
+    const oldPrice = parseFloat(existing.price) || 0;
+    const newAmount = oldAmount + parseFloat(quantity);
+    const totalCost = oldAmount * oldPrice + parseFloat(quantity) * parseFloat(price);
+    existing.amount = newAmount.toString();
+    existing.price = (totalCost / newAmount).toString();
+    existing.date = new Date().toISOString().slice(0,10);
+  } else {
+    portfolio.push({ id: crypto, date: new Date().toISOString().slice(0,10), amount: quantity, price, currency: 'eur' });
+  }
   localStorage.setItem('portfolio', JSON.stringify(portfolio));
   form.reset();
   updateTotal();
