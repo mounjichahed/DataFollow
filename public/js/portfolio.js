@@ -3,6 +3,20 @@ const addBtn = document.getElementById('add-crypto');
 const saveBtn = document.getElementById('save-portfolio');
 let coinList = [];
 
+function loadCoinList() {
+  const cached = localStorage.getItem('coinList');
+  if (cached) {
+    coinList = JSON.parse(cached);
+    return Promise.resolve();
+  }
+  return fetch('https://api.coingecko.com/api/v3/coins/list')
+    .then(res => res.json())
+    .then(data => {
+      coinList = data;
+      localStorage.setItem('coinList', JSON.stringify(data));
+    });
+}
+
 function savePortfolio() {
   const items = Array.from(tbody.querySelectorAll('tr')).map(row => {
     return {
@@ -191,17 +205,14 @@ addBtn.addEventListener('click', () => addRow());
 saveBtn.addEventListener('click', savePortfolio);
 
 (function init() {
-  fetch('https://api.coingecko.com/api/v3/coins/list')
-    .then(res => res.json())
-    .then(data => {
-      coinList = data;
-      const saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
-      if (saved.length) {
-        saved.forEach(item => addRow(item));
-      } else {
-        addRow();
-      }
-      updateTotals();
-    });
+  loadCoinList().then(() => {
+    const saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
+    if (saved.length) {
+      saved.forEach(item => addRow(item));
+    } else {
+      addRow();
+    }
+    updateTotals();
+  });
 })();
 

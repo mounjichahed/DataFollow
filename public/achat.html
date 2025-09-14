@@ -20,6 +20,9 @@
     <label>Prix (EUR):
       <input type="number" id="price" step="any" required />
     </label>
+    <label>Montant total (EUR):
+      <input type="number" id="total" step="any" readonly />
+    </label>
     <button type="submit">Ajouter</button>
   </form>
 
@@ -30,6 +33,7 @@
         <th>Crypto</th>
         <th>Quantité</th>
         <th>Prix (EUR)</th>
+        <th>Total (EUR)</th>
       </tr>
     </thead>
     <tbody id="purchases-body"></tbody>
