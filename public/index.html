@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Portefeuille Crypto</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <nav>
@@ -11,7 +12,7 @@
   </nav>
   <h1>Portefeuille Crypto</h1>
   
-  <table border="1">
+  <table>
     <thead>
       <tr>
         <th>Crypto</th>
@@ -23,6 +24,7 @@
         <th>Valeur actuelle</th>
         <th>Différence</th>
         <th>%</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody id="portfolio-body"></tbody>
@@ -33,6 +35,7 @@
         <th id="total-eur-value">0</th>
         <th id="total-eur-diff">0</th>
         <th id="total-eur-percent">0%</th>
+        <th></th>
       </tr>
       <tr>
         <th colspan="5">Total USD</th>
@@ -40,6 +43,7 @@
         <th id="total-usd-value">0</th>
         <th id="total-usd-diff">0</th>
         <th id="total-usd-percent">0%</th>
+        <th></th>
       </tr>
     </tfoot>
   </table>
