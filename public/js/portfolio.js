@@ -218,7 +218,32 @@ saveBtn.addEventListener('click', savePortfolio);
 
 (function init() {
   loadCoinList().then(() => {
-    const saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
+    const symbolMap = {};
+    coinList.forEach(c => {
+      symbolMap[c.symbol.toUpperCase()] = c.id;
+    });
+
+    let saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
+    if (!saved.length) {
+      const purchases = JSON.parse(localStorage.getItem('purchases') || '[]');
+      if (purchases.length) {
+        saved = purchases
+          .map(p => {
+            const id = symbolMap[p.crypto];
+            if (!id) return null;
+            return {
+              id,
+              date: new Date().toISOString().slice(0, 10),
+              amount: p.quantity,
+              price: p.price,
+              currency: 'eur'
+            };
+          })
+          .filter(Boolean);
+        localStorage.setItem('portfolio', JSON.stringify(saved));
+      }
+    }
+
     if (saved.length) {
       const grouped = {};
       saved.forEach(item => {
