@@ -1,5 +1,6 @@
 const tbody = document.getElementById('portfolio-body');
 const addBtn = document.getElementById('add-crypto');
+const saveBtn = document.getElementById('save-portfolio');
 let coinList = [];
 
 function savePortfolio() {
@@ -79,6 +80,7 @@ function addRow(name = '') {
 }
 
 addBtn.addEventListener('click', () => addRow());
+saveBtn.addEventListener('click', savePortfolio);
 
 (function init() {
   fetch('https://api.coingecko.com/api/v3/coins/list')
