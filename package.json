@@ -1,0 +1,14 @@
+{
+  "name": "datafollow",
+  "version": "1.0.0",
+  "description": "Follow Crypto value",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "test": "echo 'No tests specified'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
