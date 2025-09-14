@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Achat Crypto</title>
+</head>
+<body>
+  <nav>
+    <a href="/">Accueil</a> |
+    <a href="achat.html">Achat</a>
+  </nav>
+  <h1>Enregistrer un achat</h1>
+  <form id="achat-form">
+    <label>Crypto:
+      <select id="crypto-select"></select>
+    </label>
+    <label>Quantité:
+      <input type="number" id="quantity" step="any" required />
+    </label>
+    <label>Prix (EUR):
+      <input type="number" id="price" step="any" required />
+    </label>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <h2>Achats enregistrés</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Crypto</th>
+        <th>Quantité</th>
+        <th>Prix (EUR)</th>
+      </tr>
+    </thead>
+    <tbody id="purchases-body"></tbody>
+  </table>
+
+  <script src="js/achat.js"></script>
+</body>
+</html>
