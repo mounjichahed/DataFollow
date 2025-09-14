@@ -14,6 +14,9 @@ function loadCoinList() {
     .then(data => {
       coinList = data;
       localStorage.setItem('coinList', JSON.stringify(data));
+    })
+    .catch(() => {
+      coinList = [];
     });
 }
 
@@ -57,15 +60,25 @@ function populateSelect(select, selected = '') {
   emptyOption.textContent = '';
   select.appendChild(emptyOption);
 
+  let found = false;
   coinList.forEach(coin => {
     const option = document.createElement('option');
     option.value = coin.id;
     option.textContent = coin.symbol.toUpperCase();
     if (coin.id === selected) {
       option.selected = true;
+      found = true;
     }
     select.appendChild(option);
   });
+
+  if (selected && !found) {
+    const option = document.createElement('option');
+    option.value = selected;
+    option.textContent = selected.toUpperCase();
+    option.selected = true;
+    select.appendChild(option);
+  }
 }
 
 function addRow(data = {}) {
@@ -217,29 +230,32 @@ addBtn.addEventListener('click', () => addRow());
 saveBtn.addEventListener('click', savePortfolio);
 
 (function init() {
-  loadCoinList().then(() => {
+  loadCoinList().finally(() => {
     const symbolMap = {};
     coinList.forEach(c => {
       symbolMap[c.symbol.toUpperCase()] = c.id;
     });
 
-    let saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
+    let saved;
+    try {
+      saved = JSON.parse(localStorage.getItem('portfolio') || '[]');
+    } catch {
+      saved = [];
+    }
     if (!saved.length) {
       const purchases = JSON.parse(localStorage.getItem('purchases') || '[]');
       if (purchases.length) {
-        saved = purchases
-          .map(p => {
-            const id = symbolMap[p.crypto];
-            if (!id) return null;
-            return {
-              id,
-              date: new Date().toISOString().slice(0, 10),
-              amount: p.quantity,
-              price: p.price,
-              currency: 'eur'
-            };
-          })
-          .filter(Boolean);
+        saved = purchases.map(p => {
+          const symbol = (p.crypto || '').toUpperCase();
+          const id = symbolMap[symbol] || symbol.toLowerCase();
+          return {
+            id,
+            date: new Date().toISOString().slice(0, 10),
+            amount: p.quantity,
+            price: p.price,
+            currency: 'eur'
+          };
+        });
         localStorage.setItem('portfolio', JSON.stringify(saved));
       }
     }
