@@ -15,11 +15,33 @@
     <thead>
       <tr>
         <th>Crypto</th>
-        <th>Valeur (EUR)</th>
-        <th>Valeur (USD)</th>
+        <th>Date</th>
+        <th>Quantité</th>
+        <th>Prix d'achat</th>
+        <th>Devise</th>
+        <th>Coût</th>
+        <th>Valeur actuelle</th>
+        <th>Différence</th>
+        <th>%</th>
       </tr>
     </thead>
     <tbody id="portfolio-body"></tbody>
+    <tfoot>
+      <tr>
+        <th colspan="5">Total EUR</th>
+        <th id="total-eur-cost">0</th>
+        <th id="total-eur-value">0</th>
+        <th id="total-eur-diff">0</th>
+        <th id="total-eur-percent">0%</th>
+      </tr>
+      <tr>
+        <th colspan="5">Total USD</th>
+        <th id="total-usd-cost">0</th>
+        <th id="total-usd-value">0</th>
+        <th id="total-usd-diff">0</th>
+        <th id="total-usd-percent">0%</th>
+      </tr>
+    </tfoot>
   </table>
   <button id="add-crypto">+</button>
   <button id="save-portfolio">Sauvegarder</button>
