@@ -35,12 +35,15 @@ function populateSelect() {
 }
 
 function save() {
-  const purchases = Array.from(body.querySelectorAll('tr')).map(row => ({
-    crypto: row.children[0].textContent,
-    quantity: row.children[1].textContent,
-    price: row.children[2].textContent,
-    total: row.children[3].textContent
-  }));
+  const purchases = Array.from(body.querySelectorAll('tr')).map(row => {
+    const cells = row.querySelectorAll('td');
+    return {
+      crypto: cells[0].textContent,
+      quantity: cells[1].textContent,
+      price: cells[2].textContent,
+      total: cells[3].textContent
+    };
+  });
   localStorage.setItem('purchases', JSON.stringify(purchases));
 }
 
@@ -58,6 +61,18 @@ function addRow({ crypto, quantity, price, total }) {
   const tCell = document.createElement('td');
   tCell.textContent = total;
   row.appendChild(tCell);
+
+  const delCell = document.createElement('td');
+  const delBtn = document.createElement('button');
+  delBtn.textContent = 'Supprimer';
+  delBtn.classList.add('delete-btn');
+  delBtn.addEventListener('click', () => {
+    row.remove();
+    save();
+  });
+  delCell.appendChild(delBtn);
+  row.appendChild(delCell);
+
   body.appendChild(row);
 }
 

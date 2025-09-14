@@ -135,6 +135,18 @@ function addRow(data = {}) {
   percentCell.textContent = '-';
   row.appendChild(percentCell);
 
+  const actionCell = document.createElement('td');
+  const delBtn = document.createElement('button');
+  delBtn.textContent = 'Supprimer';
+  delBtn.classList.add('delete-btn');
+  delBtn.addEventListener('click', () => {
+    row.remove();
+    savePortfolio();
+    updateTotals();
+  });
+  actionCell.appendChild(delBtn);
+  row.appendChild(actionCell);
+
   function update() {
     const crypto = nameSelect.value.trim().toLowerCase();
     const amount = parseFloat(amountInput.value);
